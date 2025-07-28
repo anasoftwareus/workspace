@@ -1,0 +1,220 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Modern Pomodoro Timer</title>
+    <link rel="stylesheet" href="style.css">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+</head>
+<body>
+    <div class="app">
+        <!-- Background Elements -->
+        <div class="bg-gradient"></div>
+        <div class="bg-shapes">
+            <div class="shape shape-1"></div>
+            <div class="shape shape-2"></div>
+            <div class="shape shape-3"></div>
+        </div>
+
+        <!-- Main Container -->
+        <div class="container">
+            <!-- Header -->
+            <header class="header">
+                <div class="logo">
+                    <span class="logo-icon">🍅</span>
+                    <h1>Pomodoro</h1>
+                </div>
+                <div class="session-info">
+                    <div class="session-type" id="session-type-header">Focus Time</div>
+                    <div class="session-count" id="session-count-header">Session 1 of 4</div>
+                </div>
+                <button class="settings-toggle" id="settings-toggle">
+                    <span class="settings-icon">⚙</span>
+                    Settings
+                </button>
+            </header>
+
+            <!-- Main Content Grid -->
+            <div class="main-content">
+                <!-- Left Panel - Timer -->
+                <div class="timer-panel">
+                    <div class="timer-display">
+                        <div class="time-wrapper">
+                            <div class="time" id="time-display">25:00</div>
+                            <div class="time-label">minutes remaining</div>
+                        </div>
+
+                        <div class="circular-progress">
+                            <svg class="progress-ring" width="320" height="320">
+                                <circle class="progress-ring-bg" cx="160" cy="160" r="140" />
+                                <circle class="progress-ring-fill" id="progress-circle" cx="160" cy="160" r="140" />
+                            </svg>
+                        </div>
+                    </div>
+
+                    <div class="session-dots">
+                        <div class="dot active" data-session="1"></div>
+                        <div class="dot" data-session="2"></div>
+                        <div class="dot" data-session="3"></div>
+                        <div class="dot" data-session="4"></div>
+                    </div>
+
+                    <div class="controls">
+                        <button class="btn btn-primary" id="start-btn">
+                            <span class="btn-icon">▶</span>
+                            <span class="btn-text">Start</span>
+                        </button>
+                        <button class="btn btn-secondary" id="pause-btn" disabled>
+                            <span class="btn-icon">⏸</span>
+                            <span class="btn-text">Pause</span>
+                        </button>
+                        <button class="btn btn-ghost" id="reset-btn">
+                            <span class="btn-icon">↻</span>
+                            <span class="btn-text">Reset</span>
+                        </button>
+                        <button class="btn btn-ghost" id="skip-btn">
+                            <span class="btn-icon">⏭</span>
+                            <span class="btn-text">Skip</span>
+                        </button>
+                    </div>
+                </div>
+
+                <!-- Right Panel - Info -->
+                <div class="info-panel">
+                    <!-- Session Progress -->
+                    <div class="session-progress-card">
+                        <h3>Session Progress</h3>
+                        <div class="session-bars">
+                            <div class="session-bar active" data-session="1">
+                                <div class="bar-label">Session 1</div>
+                                <div class="bar-fill"></div>
+                            </div>
+                            <div class="session-bar" data-session="2">
+                                <div class="bar-label">Session 2</div>
+                                <div class="bar-fill"></div>
+                            </div>
+                            <div class="session-bar" data-session="3">
+                                <div class="bar-label">Session 3</div>
+                                <div class="bar-fill"></div>
+                            </div>
+                            <div class="session-bar" data-session="4">
+                                <div class="bar-label">Session 4</div>
+                                <div class="bar-fill"></div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Enhanced Stats -->
+                    <div class="stats-card">
+                        <h3>Today's Stats</h3>
+                        <div class="stats-grid">
+                            <div class="stat-item">
+                                <div class="stat-icon">🎯</div>
+                                <div class="stat-content">
+                                    <div class="stat-value" id="completed-sessions">0</div>
+                                    <div class="stat-label">Sessions</div>
+                                </div>
+                            </div>
+                            <div class="stat-item">
+                                <div class="stat-icon">⏱️</div>
+                                <div class="stat-content">
+                                    <div class="stat-value" id="total-time">0</div>
+                                    <div class="stat-label">Minutes</div>
+                                </div>
+                            </div>
+                            <div class="stat-item">
+                                <div class="stat-icon">🔥</div>
+                                <div class="stat-content">
+                                    <div class="stat-value" id="streak-count">0</div>
+                                    <div class="stat-label">Day Streak</div>
+                                </div>
+                            </div>
+                            <div class="stat-item">
+                                <div class="stat-icon">📊</div>
+                                <div class="stat-content">
+                                    <div class="stat-value" id="productivity-score">0%</div>
+                                    <div class="stat-label">Productivity</div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Quick Settings -->
+                    <div class="quick-settings-card">
+                        <h3>Quick Timer</h3>
+                        <div class="quick-settings-grid">
+                            <div class="quick-setting-btn" data-duration="15">
+                                <div class="quick-setting-time">15</div>
+                                <div class="quick-setting-label">min</div>
+                            </div>
+                            <div class="quick-setting-btn active" data-duration="25">
+                                <div class="quick-setting-time">25</div>
+                                <div class="quick-setting-label">min</div>
+                            </div>
+                            <div class="quick-setting-btn" data-duration="45">
+                                <div class="quick-setting-time">45</div>
+                                <div class="quick-setting-label">min</div>
+                            </div>
+                            <div class="quick-setting-btn" data-duration="60">
+                                <div class="quick-setting-time">60</div>
+                                <div class="quick-setting-label">min</div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Settings Panel -->
+        <div class="settings-panel" id="settings-panel">
+            <div class="settings-content">
+                <div class="settings-header">
+                    <h2>Timer Settings</h2>
+                    <button class="close-btn" id="close-settings">×</button>
+                </div>
+                <div class="settings-body">
+                    <div class="setting-group">
+                        <label for="work-duration">Focus Duration</label>
+                        <div class="input-group">
+                            <input type="number" id="work-duration" min="1" max="60" value="25">
+                            <span class="input-suffix">min</span>
+                        </div>
+                    </div>
+                    <div class="setting-group">
+                        <label for="short-break">Short Break</label>
+                        <div class="input-group">
+                            <input type="number" id="short-break" min="1" max="30" value="5">
+                            <span class="input-suffix">min</span>
+                        </div>
+                    </div>
+                    <div class="setting-group">
+                        <label for="long-break">Long Break</label>
+                        <div class="input-group">
+                            <input type="number" id="long-break" min="1" max="60" value="15">
+                            <span class="input-suffix">min</span>
+                        </div>
+                    </div>
+                    <div class="setting-group">
+                        <label for="auto-start">Auto-start sessions</label>
+                        <div class="toggle-switch">
+                            <input type="checkbox" id="auto-start">
+                            <span class="toggle-slider"></span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Notification -->
+        <div class="notification" id="notification">
+            <strong>Session Complete!</strong>
+            <span>Time for a break. Great work!</span>
+        </div>
+    </div>
+
+    <script src="script.js"></script>
+</body>
+</html>

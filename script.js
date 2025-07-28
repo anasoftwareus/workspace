@@ -316,6 +316,27 @@ class PomodoroTimer {
         });
     }
 
+    updateSessionBars() {
+        this.sessionBars.forEach((bar, index) => {
+            bar.classList.remove('active', 'completed');
+            if (index + 1 < this.currentSession) {
+                bar.classList.add('completed');
+            } else if (index + 1 === this.currentSession && this.isWorkSession) {
+                bar.classList.add('active');
+            }
+        });
+    }
+
+    updateQuickSettings() {
+        const currentDuration = parseInt(this.workDuration.value);
+        this.quickSettingBtns.forEach(btn => {
+            btn.classList.remove('active');
+            if (parseInt(btn.dataset.duration) === currentDuration) {
+                btn.classList.add('active');
+            }
+        });
+    }
+
     openSettings() {
         this.settingsPanel.classList.add('open');
     }

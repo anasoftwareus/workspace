@@ -90,6 +90,15 @@ class PomodoroTimer {
     updateStats() {
         this.completedSessionsEl.textContent = this.completedSessions;
         this.totalTimeEl.textContent = Math.floor(this.totalFocusTime / 60);
+        
+        // Update streak (simple implementation - days with at least 1 session)
+        const streak = this.completedSessions > 0 ? 1 : 0;
+        this.streakCountEl.textContent = streak;
+        
+        // Update productivity score (percentage of target sessions completed)
+        const targetSessions = 8; // 8 sessions per day target
+        const productivity = Math.min(100, Math.round((this.completedSessions / targetSessions) * 100));
+        this.productivityScoreEl.textContent = `${productivity}%`;
     }
 
     bindEvents() {

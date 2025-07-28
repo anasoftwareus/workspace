@@ -124,12 +124,17 @@ class PomodoroTimer {
         // Quick settings buttons
         this.quickSettingBtns.forEach(btn => {
             btn.addEventListener('click', () => {
+                console.log('Quick setting clicked:', btn.dataset.duration);
                 if (!this.isRunning) {
                     const duration = parseInt(btn.dataset.duration);
+                    console.log('Setting duration to:', duration);
                     this.workDuration.value = duration;
                     this.saveSettings();
                     this.reset();
                     this.updateQuickSettings();
+                    console.log('Timer updated to:', this.timeDisplay.textContent);
+                } else {
+                    console.log('Timer is running, cannot change duration');
                 }
             });
         });

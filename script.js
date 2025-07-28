@@ -85,7 +85,7 @@ class PomodoroTimer {
 
     updateStats() {
         this.completedSessionsEl.textContent = this.completedSessions;
-        this.totalTimeEl.textContent = `${Math.floor(this.totalFocusTime / 60)} min`;
+        this.totalTimeEl.textContent = Math.floor(this.totalFocusTime / 60);
     }
 
     bindEvents() {
@@ -93,6 +93,10 @@ class PomodoroTimer {
         this.pauseBtn.addEventListener('click', () => this.pause());
         this.resetBtn.addEventListener('click', () => this.reset());
         this.skipBtn.addEventListener('click', () => this.skip());
+
+        // Settings panel events
+        this.settingsToggle.addEventListener('click', () => this.openSettings());
+        this.closeSettings.addEventListener('click', () => this.closeSettingsPanel());
 
         // Settings change events
         [this.workDuration, this.shortBreak, this.longBreak, this.autoStart].forEach(input => {
@@ -117,6 +121,8 @@ class PomodoroTimer {
                 this.reset();
             } else if (e.code === 'KeyS') {
                 this.skip();
+            } else if (e.code === 'Escape') {
+                this.closeSettingsPanel();
             }
         });
 
@@ -124,6 +130,13 @@ class PomodoroTimer {
         document.addEventListener('visibilitychange', () => {
             if (document.hidden && this.isRunning) {
                 this.showNotification('Pomodoro Timer', 'Timer is running in background');
+            }
+        });
+
+        // Close settings when clicking outside
+        this.settingsPanel.addEventListener('click', (e) => {
+            if (e.target === this.settingsPanel) {
+                this.closeSettingsPanel();
             }
         });
     }
@@ -246,22 +259,46 @@ class PomodoroTimer {
 
         // Update session info
         if (this.isWorkSession) {
-            this.sessionType.textContent = 'Work Session';
-            this.sessionCount.textContent = `Session ${this.currentSession} of ${this.maxSessions}`;
+            this.sessionType.textContent = 'Focus Time';
+            this.sessionCount.textContent = `Session ${this.currentSession}`;
             this.container.className = 'container work-session';
         } else {
             const isLongBreak = this.currentSession === 1;
-            this.sessionType.textContent = isLongBreak ? 'Long Break' : 'Short Break';
-            this.sessionCount.textContent = isLongBreak ? 'Long Break Time!' : 'Short Break';
+            this.sessionType.textContent = isLongBreak ? 'Long Break' : 'Break Time';
+            this.sessionCount.textContent = isLongBreak ? 'Long Break' : 'Short Break';
             this.container.className = 'container break-session';
         }
 
-        // Update progress bar
-        const progressPercent = ((this.totalTime - this.timeLeft) / this.totalTime) * 100;
-        this.progress.style.width = `${progressPercent}%`;
+        // Update circular progress
+        const progressPercent = ((this.totalTime - this.timeLeft) / this.totalTime);
+        const circumference = 2 * Math.PI * 120; // radius = 120
+        const strokeDashoffset = circumference - (progressPercent * circumference);
+        this.progressCircle.style.strokeDashoffset = strokeDashoffset;
+
+        // Update session dots
+        this.updateSessionDots();
 
         // Update page title
         document.title = `${this.timeDisplay.textContent} - ${this.sessionType.textContent}`;
+    }
+
+    updateSessionDots() {
+        this.dots.forEach((dot, index) => {
+            dot.classList.remove('active', 'completed');
+            if (index + 1 < this.currentSession) {
+                dot.classList.add('completed');
+            } else if (index + 1 === this.currentSession && this.isWorkSession) {
+                dot.classList.add('active');
+            }
+        });
+    }
+
+    openSettings() {
+        this.settingsPanel.classList.add('open');
+    }
+
+    closeSettingsPanel() {
+        this.settingsPanel.classList.remove('open');
     }
 
     playSound(type) {

@@ -1,17 +1,9 @@
-127.0.0.1 - - [28/Jul/2025 12:46:59] "HEAD / HTTP/1.1" 200 -
-10.2.97.11 - - [28/Jul/2025 12:47:03] "GET / HTTP/1.1" 200 -
-10.2.97.11 - - [28/Jul/2025 12:47:03] "GET /style.css HTTP/1.1" 200 -
-10.2.97.11 - - [28/Jul/2025 12:47:03] "GET /script.js HTTP/1.1" 200 -
-10.2.97.11 - - [28/Jul/2025 12:47:03] "GET /sw.js HTTP/1.1" 200 -
-10.2.97.11 - - [28/Jul/2025 12:47:03] "GET /index.html HTTP/1.1" 200 -
-10.2.38.10 - - [28/Jul/2025 12:47:45] "GET / HTTP/1.1" 200 -
-10.2.38.10 - - [28/Jul/2025 12:47:45] "GET / HTTP/1.1" 200 -
-10.2.38.10 - - [28/Jul/2025 12:47:45] "GET /style.css HTTP/1.1" 200 -
-10.2.38.10 - - [28/Jul/2025 12:47:45] "GET /script.js HTTP/1.1" 200 -
-10.2.38.10 - - [28/Jul/2025 12:47:46] "GET /sw.js HTTP/1.1" 200 -
-10.2.38.10 - - [28/Jul/2025 12:47:46] "GET /index.html HTTP/1.1" 200 -
-10.2.38.10 - - [28/Jul/2025 12:49:56] "GET / HTTP/1.1" 304 -
-10.2.46.10 - - [28/Jul/2025 12:53:42] "GET / HTTP/1.1" 200 -
-10.2.46.10 - - [28/Jul/2025 12:54:20] "GET /sw.js HTTP/1.1" 304 -
-127.0.0.1 - - [28/Jul/2025 12:54:55] "GET /index.html HTTP/1.1" 200 -
-127.0.0.1 - - [28/Jul/2025 12:54:59] "GET /index.html HTTP/1.1" 200 -
+Traceback (most recent call last):
+  File "/workspace/server.py", line 22, in <module>
+    with socketserver.TCPServer(("0.0.0.0", PORT), MyHTTPRequestHandler) as httpd:
+         ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/openhands/micromamba/envs/openhands/lib/python3.12/socketserver.py", line 457, in __init__
+    self.server_bind()
+  File "/openhands/micromamba/envs/openhands/lib/python3.12/socketserver.py", line 478, in server_bind
+    self.socket.bind(self.server_address)
+OSError: [Errno 98] Address already in use

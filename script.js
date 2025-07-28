@@ -23,7 +23,7 @@ class PomodoroTimer {
         this.timeDisplay = document.getElementById('time-display');
         this.sessionType = document.getElementById('session-type');
         this.sessionCount = document.getElementById('session-count');
-        this.progress = document.getElementById('progress');
+        this.progressCircle = document.getElementById('progress-circle');
         this.startBtn = document.getElementById('start-btn');
         this.pauseBtn = document.getElementById('pause-btn');
         this.resetBtn = document.getElementById('reset-btn');
@@ -35,6 +35,10 @@ class PomodoroTimer {
         this.completedSessionsEl = document.getElementById('completed-sessions');
         this.totalTimeEl = document.getElementById('total-time');
         this.container = document.querySelector('.container');
+        this.settingsToggle = document.getElementById('settings-toggle');
+        this.settingsPanel = document.getElementById('settings-panel');
+        this.closeSettings = document.getElementById('close-settings');
+        this.dots = document.querySelectorAll('.dot');
     }
 
     loadSettings() {

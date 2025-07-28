@@ -25,9 +25,13 @@
             <header class="header">
                 <div class="logo">
                     <div class="tomato-icon">🍅</div>
-                    <h1>Pomodoro</h1>
+                    <h1>Pomodoro Timer</h1>
                 </div>
                 <div class="session-indicator">
+                    <div class="session-info-header">
+                        <span id="session-type-header" class="session-type-header">Focus Time</span>
+                        <span id="session-count-header" class="session-count-header">Session 1 of 4</span>
+                    </div>
                     <div class="dots">
                         <div class="dot active" data-session="1"></div>
                         <div class="dot" data-session="2"></div>
@@ -35,16 +39,16 @@
                         <div class="dot" data-session="4"></div>
                     </div>
                 </div>
+                <button class="settings-toggle" id="settings-toggle">
+                    <span class="settings-icon">⚙</span>
+                    Settings
+                </button>
             </header>
 
-            <!-- Timer Section -->
-            <main class="timer-section">
-                <div class="timer-card">
-                    <div class="session-info">
-                        <span id="session-type" class="session-type">Focus Time</span>
-                        <span id="session-count" class="session-count">Session 1</span>
-                    </div>
-                    
+            <!-- Main Content Grid -->
+            <div class="main-content">
+                <!-- Left Panel - Timer -->
+                <div class="timer-panel">
                     <div class="timer-display">
                         <div class="time-wrapper">
                             <div class="time" id="time-display">25:00</div>
@@ -52,9 +56,9 @@
                         </div>
                         
                         <div class="circular-progress">
-                            <svg class="progress-ring" width="280" height="280">
-                                <circle class="progress-ring-bg" cx="140" cy="140" r="120" />
-                                <circle class="progress-ring-fill" id="progress-circle" cx="140" cy="140" r="120" />
+                            <svg class="progress-ring" width="320" height="320">
+                                <circle class="progress-ring-bg" cx="160" cy="160" r="140" />
+                                <circle class="progress-ring-fill" id="progress-circle" cx="160" cy="160" r="140" />
                             </svg>
                         </div>
                     </div>
@@ -62,7 +66,7 @@
                     <div class="controls">
                         <button id="start-btn" class="btn btn-primary">
                             <span class="btn-icon">▶</span>
-                            <span class="btn-text">Start</span>
+                            <span class="btn-text">Start Focus</span>
                         </button>
                         <button id="pause-btn" class="btn btn-secondary" disabled>
                             <span class="btn-icon">⏸</span>
@@ -70,36 +74,100 @@
                         </button>
                         <button id="reset-btn" class="btn btn-ghost">
                             <span class="btn-icon">↻</span>
+                            <span class="btn-text">Reset</span>
                         </button>
                         <button id="skip-btn" class="btn btn-ghost">
                             <span class="btn-icon">⏭</span>
+                            <span class="btn-text">Skip</span>
                         </button>
                     </div>
                 </div>
-            </main>
 
-            <!-- Bottom Section -->
-            <div class="bottom-section">
-                <!-- Stats -->
-                <div class="stats-card">
-                    <h3>Today's Progress</h3>
-                    <div class="stats-grid">
-                        <div class="stat-item">
-                            <div class="stat-value" id="completed-sessions">0</div>
-                            <div class="stat-label">Sessions</div>
+                <!-- Right Panel - Stats & Info -->
+                <div class="info-panel">
+                    <!-- Session Progress -->
+                    <div class="session-progress-card">
+                        <h3>Session Progress</h3>
+                        <div class="session-visual">
+                            <div class="session-bars">
+                                <div class="session-bar" data-session="1">
+                                    <div class="bar-fill"></div>
+                                    <span class="bar-label">Session 1</span>
+                                </div>
+                                <div class="session-bar" data-session="2">
+                                    <div class="bar-fill"></div>
+                                    <span class="bar-label">Session 2</span>
+                                </div>
+                                <div class="session-bar" data-session="3">
+                                    <div class="bar-fill"></div>
+                                    <span class="bar-label">Session 3</span>
+                                </div>
+                                <div class="session-bar" data-session="4">
+                                    <div class="bar-fill"></div>
+                                    <span class="bar-label">Session 4</span>
+                                </div>
+                            </div>
                         </div>
-                        <div class="stat-item">
-                            <div class="stat-value" id="total-time">0</div>
-                            <div class="stat-label">Minutes</div>
+                    </div>
+
+                    <!-- Today's Stats -->
+                    <div class="stats-card">
+                        <h3>Today's Statistics</h3>
+                        <div class="stats-grid">
+                            <div class="stat-item">
+                                <div class="stat-icon">🎯</div>
+                                <div class="stat-content">
+                                    <div class="stat-value" id="completed-sessions">0</div>
+                                    <div class="stat-label">Completed Sessions</div>
+                                </div>
+                            </div>
+                            <div class="stat-item">
+                                <div class="stat-icon">⏱️</div>
+                                <div class="stat-content">
+                                    <div class="stat-value" id="total-time">0</div>
+                                    <div class="stat-label">Focus Minutes</div>
+                                </div>
+                            </div>
+                            <div class="stat-item">
+                                <div class="stat-icon">🔥</div>
+                                <div class="stat-content">
+                                    <div class="stat-value" id="streak-count">0</div>
+                                    <div class="stat-label">Daily Streak</div>
+                                </div>
+                            </div>
+                            <div class="stat-item">
+                                <div class="stat-icon">📈</div>
+                                <div class="stat-content">
+                                    <div class="stat-value" id="productivity-score">0%</div>
+                                    <div class="stat-label">Productivity</div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Quick Settings -->
+                    <div class="quick-settings-card">
+                        <h3>Quick Settings</h3>
+                        <div class="quick-settings-grid">
+                            <button class="quick-setting-btn" data-duration="15">
+                                <span class="quick-setting-time">15</span>
+                                <span class="quick-setting-label">min</span>
+                            </button>
+                            <button class="quick-setting-btn active" data-duration="25">
+                                <span class="quick-setting-time">25</span>
+                                <span class="quick-setting-label">min</span>
+                            </button>
+                            <button class="quick-setting-btn" data-duration="45">
+                                <span class="quick-setting-time">45</span>
+                                <span class="quick-setting-label">min</span>
+                            </button>
+                            <button class="quick-setting-btn" data-duration="60">
+                                <span class="quick-setting-time">60</span>
+                                <span class="quick-setting-label">min</span>
+                            </button>
                         </div>
                     </div>
                 </div>
-
-                <!-- Settings Toggle -->
-                <button class="settings-toggle" id="settings-toggle">
-                    <span class="settings-icon">⚙</span>
-                    Settings
-                </button>
             </div>
         </div>
 

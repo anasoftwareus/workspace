@@ -21,8 +21,8 @@ class PomodoroTimer {
 
     initializeElements() {
         this.timeDisplay = document.getElementById('time-display');
-        this.sessionType = document.getElementById('session-type');
-        this.sessionCount = document.getElementById('session-count');
+        this.sessionTypeHeader = document.getElementById('session-type-header');
+        this.sessionCountHeader = document.getElementById('session-count-header');
         this.progressCircle = document.getElementById('progress-circle');
         this.startBtn = document.getElementById('start-btn');
         this.pauseBtn = document.getElementById('pause-btn');
@@ -34,11 +34,15 @@ class PomodoroTimer {
         this.autoStart = document.getElementById('auto-start');
         this.completedSessionsEl = document.getElementById('completed-sessions');
         this.totalTimeEl = document.getElementById('total-time');
+        this.streakCountEl = document.getElementById('streak-count');
+        this.productivityScoreEl = document.getElementById('productivity-score');
         this.container = document.querySelector('.container');
         this.settingsToggle = document.getElementById('settings-toggle');
         this.settingsPanel = document.getElementById('settings-panel');
         this.closeSettings = document.getElementById('close-settings');
         this.dots = document.querySelectorAll('.dot');
+        this.quickSettingBtns = document.querySelectorAll('.quick-setting-btn');
+        this.sessionBars = document.querySelectorAll('.session-bar');
     }
 
     loadSettings() {
@@ -104,6 +108,19 @@ class PomodoroTimer {
                 this.saveSettings();
                 if (!this.isRunning) {
                     this.reset();
+                }
+            });
+        });
+
+        // Quick settings buttons
+        this.quickSettingBtns.forEach(btn => {
+            btn.addEventListener('click', () => {
+                if (!this.isRunning) {
+                    const duration = parseInt(btn.dataset.duration);
+                    this.workDuration.value = duration;
+                    this.saveSettings();
+                    this.reset();
+                    this.updateQuickSettings();
                 }
             });
         });
@@ -259,27 +276,33 @@ class PomodoroTimer {
 
         // Update session info
         if (this.isWorkSession) {
-            this.sessionType.textContent = 'Focus Time';
-            this.sessionCount.textContent = `Session ${this.currentSession}`;
+            this.sessionTypeHeader.textContent = 'Focus Time';
+            this.sessionCountHeader.textContent = `Session ${this.currentSession} of 4`;
             this.container.className = 'container work-session';
         } else {
             const isLongBreak = this.currentSession === 1;
-            this.sessionType.textContent = isLongBreak ? 'Long Break' : 'Break Time';
-            this.sessionCount.textContent = isLongBreak ? 'Long Break' : 'Short Break';
+            this.sessionTypeHeader.textContent = isLongBreak ? 'Long Break' : 'Break Time';
+            this.sessionCountHeader.textContent = isLongBreak ? 'Long Break' : 'Short Break';
             this.container.className = 'container break-session';
         }
 
         // Update circular progress
         const progressPercent = ((this.totalTime - this.timeLeft) / this.totalTime);
-        const circumference = 2 * Math.PI * 120; // radius = 120
+        const circumference = 2 * Math.PI * 140; // radius = 140 for larger circle
         const strokeDashoffset = circumference - (progressPercent * circumference);
         this.progressCircle.style.strokeDashoffset = strokeDashoffset;
 
         // Update session dots
         this.updateSessionDots();
 
+        // Update session bars
+        this.updateSessionBars();
+
+        // Update quick settings
+        this.updateQuickSettings();
+
         // Update page title
-        document.title = `${this.timeDisplay.textContent} - ${this.sessionType.textContent}`;
+        document.title = `${this.timeDisplay.textContent} - ${this.sessionTypeHeader.textContent}`;
     }
 
     updateSessionDots() {
